@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_package= "com.proto.products";
+option java_multiple_files=true;
+
+
+
+//Getting one Product
+message productRequest{
+	int32 productId=5;
+}
+
+message productResponse{
+	Product product=1;
+}
+
+//getting all the Products
+message ProductsResponse{
+	repeated Product products=1;
+}
+message productsRequest{
+	string request=1;
+}
+
+//Adding a Product
+message AddProductRequest{
+	Product Product=1;
+}
+
+message AddproductResponse{
+	string result=1;
+}
+
+message Product{
+	int32 productId=5;
+	string name=1;
+	int32 farmerId=2;
+	int32 quantity=3;
+	float price_per_unit=4;
+}
+
+service ProductServer{
+	//Adding one product
+	rpc AddProduct(AddProductRequest) returns (AddproductResponse){};
+	//Getting all the products
+	rpc GetProducts(productsRequest) returns (ProductsResponse){};
+	//Getting one Product
+	rpc GetProduct(productRequest) returns(productResponse){};
+}
