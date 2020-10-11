@@ -1,18 +1,32 @@
 package com.kzmpekos.products;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
 public class Product {
-    private int productId;
-    private String name;
-    private int farmerId;
-    private int quantity;
-    private double pricePerUnit;
-
     @Id
     @Column(name = "product_id", nullable = false)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment",strategy = "increment")
+    private int productId;
+    @Basic
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+    @Basic
+    @Column(name = "farmer_id", nullable = false)
+    private int farmerId;
+    @Basic
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+    @Basic
+    @Column(name = "price_per_unit", nullable = false, precision = 0)
+    private float pricePerUnit;
+
+    public Product() {
+    }
+
     public int getProductId() {
         return productId;
     }
@@ -21,8 +35,6 @@ public class Product {
         this.productId = productId;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
@@ -31,8 +43,6 @@ public class Product {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "farmer_id", nullable = false)
     public int getFarmerId() {
         return farmerId;
     }
@@ -41,8 +51,6 @@ public class Product {
         this.farmerId = farmerId;
     }
 
-    @Basic
-    @Column(name = "quantity", nullable = false)
     public int getQuantity() {
         return quantity;
     }
@@ -51,42 +59,11 @@ public class Product {
         this.quantity = quantity;
     }
 
-    @Basic
-    @Column(name = "price_per_unit", nullable = false, precision = 0)
-    public double getPricePerUnit() {
+    public float getPricePerUnit() {
         return pricePerUnit;
     }
 
-    public void setPricePerUnit(double pricePerUnit) {
+    public void setPricePerUnit(float pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Product products = (Product) o;
-
-        if (productId != products.productId) return false;
-        if (farmerId != products.farmerId) return false;
-        if (quantity != products.quantity) return false;
-        if (Double.compare(products.pricePerUnit, pricePerUnit) != 0) return false;
-        if (name != null ? !name.equals(products.name) : products.name != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = productId;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + farmerId;
-        result = 31 * result + quantity;
-        temp = Double.doubleToLongBits(pricePerUnit);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
     }
 }

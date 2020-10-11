@@ -1,0 +1,30 @@
+syntax="proto3";
+
+option java_package="com.proto.commissions";
+option java_multiple_files=true;
+
+message AddCommissionRequest{
+  Commission commission=1;
+}
+
+message AddCommissionResponse{
+  string result=1;
+}
+
+message GetCommissionsRequest{
+  int32 userId=1;
+}
+
+message GetCommissionsResponse{
+  repeated Commission commissions=1;
+}
+
+message Commission{
+  int32 UserId=1;
+  int32 farmerId=2;
+  float totalPrice=4;
+}
+service CommissionServer{
+  rpc addCommission(AddCommissionRequest) returns (AddCommissionResponse){};
+  rpc getCommissions(GetCommissionsRequest) returns (GetCommissionsResponse);
+}

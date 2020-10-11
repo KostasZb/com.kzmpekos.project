@@ -16,7 +16,7 @@ public class HibernateUtil {
     //Getting one product by id
     public static Product getProductById(int id){
 
-        //Building the session
+        //Setting up the factory and building the session
         StandardServiceRegistry serviceRegistry=new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
         Metadata meta=new MetadataSources(serviceRegistry).getMetadataBuilder().build();
 

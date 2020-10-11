@@ -12,10 +12,5 @@
         <mapping resource="Productshbm.xml"/>
         <mapping class="com.kzmpekos.products.Product"/>
 
-        <!-- <property name="connection.username"/> -->
-        <!-- <property name="connection.password"/> -->
-
-        <!-- DB schema will be updated if needed -->
-        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
     </session-factory>
 </hibernate-configuration>

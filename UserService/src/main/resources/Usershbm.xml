@@ -6,6 +6,7 @@
     <class name="com.kzmpekos.users.User" table="user" schema="user">
         <id name="userId">
             <column name="product_id" sql-type="int"/>
+            <generator class="native"/>
         </id>
         <property name="addressId">
             <column name="address_id" sql-type="int"/>

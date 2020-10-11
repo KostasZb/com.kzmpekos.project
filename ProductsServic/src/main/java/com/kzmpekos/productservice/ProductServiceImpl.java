@@ -35,7 +35,7 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
         //REFERENCE:https://developers.google.com/protocol-buffers/docs/reference/java-generated
         Product prod= Product.newBuilder().setProductId(product.getProductId()).
                 setName(product.getName()).setFarmerId(product.getFarmerId()).setQuantity(product.getQuantity()).
-                setPricePerUnit((float)product.getPricePerUnit()).build();
+                setPricePerUnit(product.getPricePerUnit()).build();
 
         //Creating the response and completing the RPC
         productResponse response=productResponse.newBuilder().setProduct(prod).build();
@@ -52,7 +52,7 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
              ) {
             Product prod= Product.newBuilder().setProductId(product.getProductId()).
                     setName(product.getName()).setFarmerId(product.getFarmerId()).setQuantity(product.getQuantity()).
-                    setPricePerUnit((float)product.getPricePerUnit()).build();
+                    setPricePerUnit(product.getPricePerUnit()).build();
             productsList.add(prod);
         }
         //creating the response and completing the rpc
