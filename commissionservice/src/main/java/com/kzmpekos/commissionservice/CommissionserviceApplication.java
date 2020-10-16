@@ -1,17 +1,15 @@
-package com.kzmpekos.addressservice;
+package com.kzmpekos.commissionservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-
 @EnableEurekaClient
 @SpringBootApplication
-public class AddressserviceApplication {
+public class CommissionserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AddressserviceApplication.class, args);
-
+        SpringApplication.run(CommissionserviceApplication.class, args);
     }
 
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 @GRpcService
-public class AddressServiceImpl extends addressServerGrpc.addressServerImplBase{
+public class AddressServiceImpl extends addressServerGrpc.addressServerImplBase {
 
     @Autowired
     private AddressRepository repository;
@@ -18,27 +18,42 @@ public class AddressServiceImpl extends addressServerGrpc.addressServerImplBase{
 
     @Override
     public void getAddress(getAddressRequest request, StreamObserver<getAddressResponse> responseObserver) {
-        int addressId=request.getAddressId();
-        addressDetails details=null;
-        //REFERENCE: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html & https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
-        Optional<Address> address= repository.findById(addressId);
-        if(address.isPresent()){
-            Address addr=address.get();
-            details=addressDetails.newBuilder().
+        int addressId = request.getAddressId();
+        addressDetails details = null;
+        //REFERENCE: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
+        // & https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
+        Optional<Address> address = repository.findById(addressId);
+        if (address.isPresent()) {
+            Address addr = address.get();
+            details = addressDetails.newBuilder().
                     setAddress(addr.getAddress()).
                     setCity(addr.getCity()).
                     setPostcode(addr.getPostcode()).build();
 
-        }else{
+        } else {
 
         }
-        getAddressResponse response=getAddressResponse.newBuilder().setAddress(details).build();
+        getAddressResponse response = getAddressResponse.newBuilder().setAddress(details).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
     @Override
     public void addAddress(addAddressRequest request, StreamObserver<addAddressResponse> responseObserver) {
-        super.addAddress(request, responseObserver);
+        addressDetails address = request.getAddress();
+        Address addr=new Address();
+        //Copying the values
+        addr.setPostcode(address.getPostcode());
+        addr.setAddress(address.getAddress());
+        addr.setCity(address.getCity());
+
+        //saving in the db
+        Address add=repository.save(addr);
+        int result=add.getAddressId();
+
+        //Building the response and completing the RPC
+        addAddressResponse response=addAddressResponse.newBuilder().setAddressId(result).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

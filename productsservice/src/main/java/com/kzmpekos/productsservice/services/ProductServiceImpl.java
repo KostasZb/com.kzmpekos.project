@@ -64,21 +64,21 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
     @Override
     public void getProduct(productRequest request, StreamObserver<productResponse> responseObserver) {
         int id = request.getProductId();
-        Product produc=null;
+        Product produc = null;
         //REFERENCE: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html & https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
         Optional<com.kzmpekos.productsservice.entities.Product> product = repository.findById(id);
         if (product.isPresent()) {
             com.kzmpekos.productsservice.entities.Product prod = product.get();
-            produc =Product.newBuilder()
+            produc = Product.newBuilder()
                     .setName(prod.getName())
                     .setFarmerId(prod.getFarmerId())
                     .setPricePerUnit(prod.getPricePerUnit())
                     .setQuantity(prod.getQuantity())
                     .setProductId(prod.getProductId()).build();
-        }else{
+        } else {
 
         }
-        productResponse response=productResponse.newBuilder().setProduct(produc).build();
+        productResponse response = productResponse.newBuilder().setProduct(produc).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
 
