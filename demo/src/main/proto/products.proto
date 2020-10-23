@@ -1,49 +1,72 @@
 syntax = "proto3";
 
-option java_package = "com.proto.products";
-option java_multiple_files = true;
+option java_package= "com.proto.products";
+option java_multiple_files=true;
 
+
+//Updating a product
+message UpdateRequest{
+	Product product=1;
+}
+
+message UpdateResponse{
+	string response=1;
+}
+
+
+//Getting all products by farmer id
+message  ProductByFarmerIdRequest{
+	int32 farmerId=1;
+}
+
+message ProductByFarmerIdResponse{
+	repeated Product products=1;
+}
 
 
 //Getting one Product
-message productRequest{
-  int32 productId = 5;
+message ProductRequest{
+	int32 productId=5;
 }
 
-message productResponse{
-  Product product = 1;
+message ProductResponse{
+	Product product=1;
 }
 
 //getting all the Products
 message ProductsResponse{
-  repeated Product products = 1;
+	repeated Product products=1;
 }
-message productsRequest{
-  string request = 1;
+message ProductsRequest{
+	string request=1;
 }
 
 //Adding a Product
 message AddProductRequest{
-  Product Product = 1;
+	Product Product=1;
 }
 
 message AddproductResponse{
-  string result = 1;
+	string result=1;
 }
 
 message Product{
-  int32 productId = 5;
-  string name = 1;
-  int32 farmerId = 2;
-  int32 quantity = 3;
-  float price_per_unit = 4;
+	int32 productId=5;
+	string name=1;
+	int32 farmerId=2;
+	int32 quantity=3;
+	float price_per_unit=4;
 }
 
 service ProductServer{
-  //Adding one product
-  rpc AddProduct(AddProductRequest) returns (AddproductResponse){};
-  //Getting all the products
-  rpc GetProducts(productsRequest) returns (ProductsResponse){};
-  //Getting one Product
-  rpc GetProduct(productRequest) returns(productResponse){};
+	//Adding one product
+	rpc AddProduct(AddProductRequest) returns (AddproductResponse){};
+	//Getting all the products
+	rpc GetProducts(ProductsRequest) returns (ProductsResponse){};
+	//Getting one Product
+	rpc GetProduct(ProductRequest) returns(ProductResponse){};
+	//Getting all products by farmer id
+	rpc GetProductsByFarmerId(ProductByFarmerIdRequest) returns (ProductByFarmerIdResponse);
+	//Updating a product
+	rpc update(UpdateRequest) returns (UpdateResponse);
 }

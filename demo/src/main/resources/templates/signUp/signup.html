@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <script src="/resources/static/scripts.js"></script>
+    <title>Sign Up!</title>
+</head>
+<body>
+
+<div class="container pt-3 border">
+    <h2 class="text-center">Sign Up!</h2>
+    <form action="signup/adduser" method="post">
+        <input type="text" placeholder="email" name="email" class="form-control pt-3">
+        <input type="text" placeholder="password" name="password" class="form-control pt-3">
+        <input type="text" placeholder="name" name="name" class="form-control pt-3">
+        <input type="text" placeholder="city" name="city" class="form-control pt-3">
+        <input type="text" placeholder="postcode" name="postcode" class="form-control pt-3">
+        <input type="text" placeholder="address" name="address" class="form-control pt-3">
+        <input type="checkbox" value="false" name="farmer" id="customer">
+        <label for="customer">customer</label>
+        <input type="checkbox" value="true" name="farmer" id="farmer">
+        <label for="farmer">farmer</label>
+
+        <input type="submit" class="">
+    </form>
+</div>
+</body>
+</html>
