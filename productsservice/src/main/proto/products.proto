@@ -4,13 +4,42 @@ option java_package= "com.proto.products";
 option java_multiple_files=true;
 
 
+//Removing a product
+message deleteRequest{
+	int32 productId=1;
+}
+
+message deleteResponse{
+	string response=1;
+	Product product=2;
+}
+
+//Updating a product
+message UpdateRequest{
+	Product product=1;
+}
+
+message UpdateResponse{
+	string response=1;
+}
+
+
+//Getting all products by farmer id
+message  ProductByFarmerIdRequest{
+	int32 farmerId=1;
+}
+
+message ProductByFarmerIdResponse{
+	repeated Product products=1;
+}
+
 
 //Getting one Product
-message productRequest{
+message ProductRequest{
 	int32 productId=5;
 }
 
-message productResponse{
+message ProductResponse{
 	Product product=1;
 }
 
@@ -18,7 +47,7 @@ message productResponse{
 message ProductsResponse{
 	repeated Product products=1;
 }
-message productsRequest{
+message ProductsRequest{
 	string request=1;
 }
 
@@ -43,7 +72,13 @@ service ProductServer{
 	//Adding one product
 	rpc AddProduct(AddProductRequest) returns (AddproductResponse){};
 	//Getting all the products
-	rpc GetProducts(productsRequest) returns (ProductsResponse){};
+	rpc GetProducts(ProductsRequest) returns (ProductsResponse){};
 	//Getting one Product
-	rpc GetProduct(productRequest) returns(productResponse){};
+	rpc GetProduct(ProductRequest) returns(ProductResponse){};
+	//Getting all products by farmer id
+	rpc GetProductsByFarmerId(ProductByFarmerIdRequest) returns (ProductByFarmerIdResponse);
+	//Updating a product
+	rpc update(UpdateRequest) returns (UpdateResponse);
+	//Removing a product
+	rpc delete(deleteRequest) returns (deleteResponse);
 }

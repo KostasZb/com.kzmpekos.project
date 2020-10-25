@@ -90,7 +90,6 @@ public class ProductsService {
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
-        //ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 6564).usePlaintext().build();
         ProductServerGrpc.ProductServerBlockingStub productServer = ProductServerGrpc.newBlockingStub(channel);
 
         //Creating and building the message
@@ -98,5 +97,18 @@ public class ProductsService {
         String response=productServer.update(request).getResponse();
         channel.shutdown();
         return response;
+    }
+
+    public Product deleteProductById(int id){
+        //creating the channel
+        EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
+        InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
+        ProductServerGrpc.ProductServerBlockingStub productServer = ProductServerGrpc.newBlockingStub(channel);
+        //Creating and building the message
+        deleteRequest request= deleteRequest.newBuilder().setProductId(id).build();
+        Product product=productServer.delete(request).getProduct();
+        channel.shutdown();
+        return product;
     }
 }

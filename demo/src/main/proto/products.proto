@@ -4,6 +4,16 @@ option java_package= "com.proto.products";
 option java_multiple_files=true;
 
 
+//Removing a product
+message deleteRequest{
+	int32 productId=1;
+}
+
+message deleteResponse{
+	string response=1;
+	Product product=2;
+}
+
 //Updating a product
 message UpdateRequest{
 	Product product=1;
@@ -69,4 +79,6 @@ service ProductServer{
 	rpc GetProductsByFarmerId(ProductByFarmerIdRequest) returns (ProductByFarmerIdResponse);
 	//Updating a product
 	rpc update(UpdateRequest) returns (UpdateResponse);
+	//Removing a product
+	rpc delete(deleteRequest) returns (deleteResponse);
 }

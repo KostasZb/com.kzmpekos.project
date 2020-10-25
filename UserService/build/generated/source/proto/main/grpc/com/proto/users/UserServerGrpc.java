@@ -89,6 +89,37 @@ public final class UserServerGrpc {
     return getLogInMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<com.proto.users.getUserByEmailRequest,
+      com.proto.users.getUserByEmailResponse> getGetUserByEmailMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "GetUserByEmail",
+      requestType = com.proto.users.getUserByEmailRequest.class,
+      responseType = com.proto.users.getUserByEmailResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<com.proto.users.getUserByEmailRequest,
+      com.proto.users.getUserByEmailResponse> getGetUserByEmailMethod() {
+    io.grpc.MethodDescriptor<com.proto.users.getUserByEmailRequest, com.proto.users.getUserByEmailResponse> getGetUserByEmailMethod;
+    if ((getGetUserByEmailMethod = UserServerGrpc.getGetUserByEmailMethod) == null) {
+      synchronized (UserServerGrpc.class) {
+        if ((getGetUserByEmailMethod = UserServerGrpc.getGetUserByEmailMethod) == null) {
+          UserServerGrpc.getGetUserByEmailMethod = getGetUserByEmailMethod =
+              io.grpc.MethodDescriptor.<com.proto.users.getUserByEmailRequest, com.proto.users.getUserByEmailResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "GetUserByEmail"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.proto.users.getUserByEmailRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  com.proto.users.getUserByEmailResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new UserServerMethodDescriptorSupplier("GetUserByEmail"))
+              .build();
+        }
+      }
+    }
+    return getGetUserByEmailMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -151,6 +182,13 @@ public final class UserServerGrpc {
       asyncUnimplementedUnaryCall(getLogInMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void getUserByEmail(com.proto.users.getUserByEmailRequest request,
+        io.grpc.stub.StreamObserver<com.proto.users.getUserByEmailResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getGetUserByEmailMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -167,6 +205,13 @@ public final class UserServerGrpc {
                 com.proto.users.LogInRequest,
                 com.proto.users.LogInResponse>(
                   this, METHODID_LOG_IN)))
+          .addMethod(
+            getGetUserByEmailMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.proto.users.getUserByEmailRequest,
+                com.proto.users.getUserByEmailResponse>(
+                  this, METHODID_GET_USER_BY_EMAIL)))
           .build();
     }
   }
@@ -200,6 +245,14 @@ public final class UserServerGrpc {
       asyncUnaryCall(
           getChannel().newCall(getLogInMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void getUserByEmail(com.proto.users.getUserByEmailRequest request,
+        io.grpc.stub.StreamObserver<com.proto.users.getUserByEmailResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getGetUserByEmailMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -228,6 +281,13 @@ public final class UserServerGrpc {
     public com.proto.users.LogInResponse logIn(com.proto.users.LogInRequest request) {
       return blockingUnaryCall(
           getChannel(), getLogInMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public com.proto.users.getUserByEmailResponse getUserByEmail(com.proto.users.getUserByEmailRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getGetUserByEmailMethod(), getCallOptions(), request);
     }
   }
 
@@ -260,10 +320,19 @@ public final class UserServerGrpc {
       return futureUnaryCall(
           getChannel().newCall(getLogInMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.proto.users.getUserByEmailResponse> getUserByEmail(
+        com.proto.users.getUserByEmailRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getGetUserByEmailMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_SIGN_UP = 0;
   private static final int METHODID_LOG_IN = 1;
+  private static final int METHODID_GET_USER_BY_EMAIL = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -289,6 +358,10 @@ public final class UserServerGrpc {
         case METHODID_LOG_IN:
           serviceImpl.logIn((com.proto.users.LogInRequest) request,
               (io.grpc.stub.StreamObserver<com.proto.users.LogInResponse>) responseObserver);
+          break;
+        case METHODID_GET_USER_BY_EMAIL:
+          serviceImpl.getUserByEmail((com.proto.users.getUserByEmailRequest) request,
+              (io.grpc.stub.StreamObserver<com.proto.users.getUserByEmailResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -353,6 +426,7 @@ public final class UserServerGrpc {
               .setSchemaDescriptor(new UserServerFileDescriptorSupplier())
               .addMethod(getSignUpMethod())
               .addMethod(getLogInMethod())
+              .addMethod(getGetUserByEmailMethod())
               .build();
         }
       }

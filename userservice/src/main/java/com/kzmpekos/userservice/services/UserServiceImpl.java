@@ -21,9 +21,10 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
         usr.setEmail(user.getEmail());
         usr.setFarmer(user.getIsFarmer());
         usr.setAddressId(user.getAddressId());
+        //usr.setUserId(2);
         //Saving the user in the db
         String result;
-        if (usr != null && repository.findByEmail(user.getEmail())==null) {
+        if (usr != null && repository.findByEmail(user.getEmail()) == null) {
             repository.save(usr);
             result = "User successfully added";
         } else {
@@ -38,19 +39,39 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
 
     @Override
     public void logIn(LogInRequest request, StreamObserver<LogInResponse> responseObserver) {
-        String email=request.getUserDetails().getEmail();
-        String password=request.getUserDetails().getPassword();
-        com.kzmpekos.userservice.entities.User user=repository.findByEmailAndPassword(email,password);
-        User usr=null;
-        if(user!=null){
-            usr=User.newBuilder().
+        String email = request.getUserDetails().getEmail();
+        String password = request.getUserDetails().getPassword();
+        com.kzmpekos.userservice.entities.User user = repository.findByEmailAndPassword(email, password);
+        User usr = null;
+        if (user != null) {
+            usr = User.newBuilder().
                     setUserId(user.getUserId()).
                     setName(user.getName()).
                     setAddressId(user.getAddressId()).
                     setIsFarmer(user.getIsFarmer()).build();
         }
         //Building the response and completing the RPC
-        LogInResponse response=LogInResponse.newBuilder().setUser(usr).build();
+        LogInResponse response = LogInResponse.newBuilder().setUser(usr).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserByEmail(getUserByEmailRequest request, StreamObserver<getUserByEmailResponse> responseObserver) {
+        String email=request.getEmail();
+        com.kzmpekos.userservice.entities.User user = repository.findByEmail(email);
+        User usr = null;
+        if (user != null) {
+            usr = User.newBuilder().
+                    setUserId(user.getUserId()).
+                    setName(user.getName()).
+                    setAddressId(user.getAddressId()).
+                    setIsFarmer(user.getIsFarmer()).
+                    setPassword(user.getPassword()).build();
+
+        }
+        //Building the response and completing the RPC
+        getUserByEmailResponse response = getUserByEmailResponse.newBuilder().setUser(usr).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

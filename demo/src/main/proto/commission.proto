@@ -21,7 +21,7 @@ message GetCommissionsResponse{
 
 message Commission{
   int32 UserId=1;
-  int32 farmerId=2;
+  int32 productId=2;
   float totalPrice=4;
 }
 service CommissionServer{

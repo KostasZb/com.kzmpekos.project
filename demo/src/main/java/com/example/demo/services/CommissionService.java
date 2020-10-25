@@ -13,22 +13,20 @@ import java.util.List;
 @Service
 public class CommissionService {
 
-    public void addCommission() {
+    public String addCommission(int productId,int userId, float totalPrice) {
 
         //Creating the channel
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("commissionservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
-        //ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 5003).usePlaintext().build();
         CommissionServerGrpc.CommissionServerBlockingStub commissionServer = CommissionServerGrpc.newBlockingStub(channel);
 
         //Creating and building the message
-        /*TODO */
-        Commission commission = Commission.newBuilder().setUserId(2).setFarmerId(2).setTotalPrice(3).build();
-
+        Commission commission = Commission.newBuilder().setUserId(userId).setProductId(productId).setTotalPrice(totalPrice).build();
         AddCommissionRequest request = AddCommissionRequest.newBuilder().setCommission(commission).build();
         //Doing the RPC and retrieving the reply
         AddCommissionResponse response = commissionServer.addCommission(request);
+        return response.getResult();
     }
 
     public void getCommissions(int userId) {

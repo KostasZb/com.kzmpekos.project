@@ -13,8 +13,8 @@ public class Commission {
     @Column(name = "userId")
     private int userId;
     @Basic
-    @Column(name = "farmerId")
-    private int farmerId;
+    @Column(name = "productId")
+    private int productId;
     @Basic
     @Column(name = "timestamp")
     private Timestamp timestamp;
@@ -38,15 +38,15 @@ public class Commission {
     }
 
     public void setUserId(int userId) {
-        userId = userId;
+        this.userId = userId;
     }
 
-    public int getFarmerId() {
-        return farmerId;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setFarmerId(int farmerId) {
-        this.farmerId = farmerId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public Timestamp getTimestamp() {
@@ -62,7 +62,7 @@ public class Commission {
     }
 
     public void setTotalCost(float totalCost) {
-        totalCost = totalCost;
+        this.totalCost = totalCost;
     }
 
 

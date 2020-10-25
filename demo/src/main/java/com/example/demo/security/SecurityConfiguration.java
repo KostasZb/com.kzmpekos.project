@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+//REFERENCE: https://www.youtube.com/watch?v=her_7pa0vrg&t=11987s&ab_channel=Amigoscode
+
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -26,13 +28,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http.
+                authorizeRequests()
                 .antMatchers("/", "index", "login", "signup", "/js/*").permitAll()
                 .antMatchers("/market").hasAnyRole(ApplicationUserRole.USER.name(),ApplicationUserRole.FARMER.name())
                 .antMatchers("/farmerhome").hasRole(ApplicationUserRole.FARMER.name())
                 .and()
-                .formLogin();
+                .formLogin().loginPage("/login").usernameParameter("email").and()
+                .logout().logoutUrl("/logout").clearAuthentication(true).invalidateHttpSession(true).deleteCookies("JSESSIONID");
     }
+
 
     //Setting the password encoder
     @Bean

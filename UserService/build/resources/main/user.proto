@@ -3,7 +3,13 @@ syntax="proto3";
 option java_package="com.proto.users";
 option java_multiple_files=true;
 
+message getUserByEmailRequest{
+  string email=1;
+}
 
+message getUserByEmailResponse{
+  User user=1;
+}
 
 message SignUpRequest{
   User user=1;
@@ -23,6 +29,7 @@ message LogInResponse{
 service UserServer{
   rpc SignUp(SignUpRequest) returns (SignUpResponse){};
   rpc LogIn(LogInRequest) returns (LogInResponse){};
+  rpc GetUserByEmail(getUserByEmailRequest) returns (getUserByEmailResponse){};
 }
 
 message User{

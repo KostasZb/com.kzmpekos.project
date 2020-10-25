@@ -26,8 +26,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = service.getUser(username);
         Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
-        SimpleGrantedAuthority roleUser=new SimpleGrantedAuthority("ROLE_USER");
-        SimpleGrantedAuthority roleFarmer=new SimpleGrantedAuthority("ROLE_FARMER");
+
+        SimpleGrantedAuthority roleUser=new SimpleGrantedAuthority("ROLE_"+ApplicationUserRole.USER.name());
+        SimpleGrantedAuthority roleFarmer=new SimpleGrantedAuthority("ROLE_"+ApplicationUserRole.FARMER.name());
         if(user.getIsFarmer()){
             authorities.add(roleFarmer);
         }else{
@@ -35,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         UserDetailsImpl userDetails = new UserDetailsImpl( authorities, passwordEncoder.encode(user.getPassword()), user.getEmail());
-        //userDetails.addAuthority(new GrantedAuthority("ROLE_USER"));
+        userDetails.setUserId(user.getUserId());
         return userDetails;
     }
 }

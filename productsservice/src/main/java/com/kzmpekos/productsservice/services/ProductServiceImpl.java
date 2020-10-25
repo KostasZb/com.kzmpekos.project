@@ -40,8 +40,10 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
 
     }
 
+
+
     @Override
-    public void getProducts(productsRequest request, StreamObserver<ProductsResponse> responseObserver) {
+    public void getProducts(ProductsRequest request, StreamObserver<ProductsResponse> responseObserver) {
         List<com.kzmpekos.productsservice.entities.Product> products = repository.findAll();
         //Copying the values
         ArrayList<Product> productsList = new ArrayList<>();
@@ -62,7 +64,7 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
     }
 
     @Override
-    public void getProduct(productRequest request, StreamObserver<productResponse> responseObserver) {
+    public void getProduct(ProductRequest request, StreamObserver<ProductResponse> responseObserver) {
         int id = request.getProductId();
         Product produc = null;
         //REFERENCE: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html & https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
@@ -78,10 +80,48 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
         } else {
 
         }
-        productResponse response = productResponse.newBuilder().setProduct(produc).build();
+        ProductResponse response = ProductResponse.newBuilder().setProduct(produc).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
 
+    }
+
+
+    @Override
+    public void getProductsByFarmerId(ProductByFarmerIdRequest request, StreamObserver<ProductByFarmerIdResponse> responseObserver) {
+        int id= request.getFarmerId();
+        List<com.kzmpekos.productsservice.entities.Product> products=repository.findAllByFarmerId(id);
+        List<Product> prods=new ArrayList<>();
+        for (com.kzmpekos.productsservice.entities.Product product : products
+        ) {
+            Product prod = Product.newBuilder().setProductId(product.getProductId()).
+                    setName(product.getName()).setFarmerId(product.getFarmerId()).setQuantity(product.getQuantity()).
+                    setPricePerUnit(product.getPricePerUnit()).build();
+            prods.add(prod);
+        }
+        //creating the response and completing the rpc
+        ProductByFarmerIdResponse response = ProductByFarmerIdResponse.newBuilder().addAllProducts(prods).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
 
     }
+
+    @Override
+    public void delete(deleteRequest request, StreamObserver<deleteResponse> responseObserver) {
+        int productId=request.getProductId();
+        com.kzmpekos.productsservice.entities.Product prod=repository.findByProductId(productId);
+        Product product=Product.newBuilder().setQuantity(prod.getQuantity())
+                .setPricePerUnit(prod.getPricePerUnit())
+                .setName(prod.getName())
+                .setProductId(prod.getProductId())
+                .setFarmerId(prod.getFarmerId())
+                .build();
+        repository.deleteById(productId);
+        deleteResponse response=deleteResponse.newBuilder().setResponse("product deleted").setProduct(product).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+
+
 }
