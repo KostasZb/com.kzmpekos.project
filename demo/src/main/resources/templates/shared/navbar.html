@@ -1,0 +1,29 @@
+<!--REFERENCE https://www.thymeleaf.org/doc/articles/layouts.html-->
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark " xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav ">
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/market"> Marketplace</a>
+                </li>
+                <!--REFERENCE: https://www.thymeleaf.org/doc/articles/springsecurity.html-->
+                <li class="nav-item" sec:authorize="hasRole('ROLE_FARMER')">
+                    <a class="nav-link text-light" href="/farmerhome"/>Farmer's page</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link text-light" href="/logout"/> Log out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/signup"/> Sign up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/login"/> Log in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

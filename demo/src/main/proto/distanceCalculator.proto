@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_package = "com.proto.distanceCalculator";
+option java_multiple_files = true;
+
+message productWithDistance{
+  int32 productId = 5;
+  string name = 1;
+  int32 farmerName = 2;
+  int32 quantity = 3;
+  float price_per_unit = 4;
+  float distance = 6;
+}
+message getProductsWithDistanceRequest{
+    int32 userId=1;
+}
+message getProductsWithDistanceResponse{
+    repeated productWithDistance productWithDistance=1;
+}
+
+service distanceCalculatorServer{
+  //Getting List of products with distance details
+  rpc GetProductsWithDistance(getProductsWithDistanceRequest) returns (getProductsWithDistanceResponse){};
+}

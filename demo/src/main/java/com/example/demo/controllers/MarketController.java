@@ -27,6 +27,7 @@ public class MarketController {
 
     @GetMapping(value = {""})
     public String getProducts(Model model) {
+
         model.addAttribute("products", productsService.getProducts());
         return "market/productslist";
     }
@@ -42,6 +43,12 @@ public class MarketController {
         float totalPrice=product.getPricePerUnit()*product.getQuantity();
         String data=commissionService.addCommission(prodId,userId,totalPrice);
         return data;
+    }
+
+    @PostMapping(value = {"/distance"})
+    @ResponseBody
+    public String calculateDistance(int productId){
+        return "";
     }
 
 }

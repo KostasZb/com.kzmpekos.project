@@ -17,48 +17,24 @@
 </head>
 <body xmlns:th="http://www.w3.org/1999/xhtml">
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
-    <div class="container-fluid">
-
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav ">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/market"> Marketplace</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/farmerhome"/>Farmer's page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/logout"/> Log out</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/signup"/> Sign up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/login"/> Log in</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="shared/navbar"></div>
 
 <div class="container">
     <table class="table table-striped">
         <tr>
             <th>Product name</th>
-            <th>Quantity</th>
-            <th>Price per unit</th>
-            <th>Total price</th>
+            <th>Quantity (Kg)</th>
+            <th>Price per unit (£/Kg)</th>
+            <th>Total price (£)</th>
+            <th>Farmer's name</th>
+            <th>Order product</th>
         </tr>
         <tr th:each="product:${products}" >
             <td th:text="${product.name}"></td>
             <td th:text="${product.quantity}"></td>
             <td th:text="${product.pricePerUnit}"></td>
             <td th:text="${product.quantity}*${product.pricePerUnit}"></td>
+            <td th:id="${product.farmerName}"></td>
             <td><button type="button" class="btn btn-secondary" th:id="${product.productId}">Order</button></td>
         </tr>
     </table>

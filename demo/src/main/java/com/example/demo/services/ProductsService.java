@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.NewProduct;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.DiscoveryManager;
 import com.netflix.discovery.EurekaClient;
@@ -17,17 +18,20 @@ public class ProductsService {
 
 
     //Adding a product
-    public void addProduct() {
+    public void addProduct(NewProduct newProduct) {
         //creating the channel
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
         //ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 6564).usePlaintext().build();
         ProductServerGrpc.ProductServerBlockingStub productServer = ProductServerGrpc.newBlockingStub(channel);
-
+        Product product=Product.newBuilder()
+                .setQuantity(newProduct.getQuantity())
+                .setPricePerUnit(newProduct.getPricePerUnit())
+                .setFarmerId(newProduct.getFarmerId())
+                .setName(newProduct.getName())
+                .build();
         //Creating and building the message
-        /*TO BE CHANGED*/
-        Product product = Product.newBuilder().setName("asasda").setPricePerUnit(2).setQuantity(5).build();
         AddProductRequest request = AddProductRequest.newBuilder().setProduct(product).build();
 
         //Doing the RPC and retrieving the reply
@@ -76,7 +80,6 @@ public class ProductsService {
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
-        //ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 6564).usePlaintext().build();
         ProductServerGrpc.ProductServerBlockingStub productServer = ProductServerGrpc.newBlockingStub(channel);
 
         //Creating and building the message
@@ -110,5 +113,9 @@ public class ProductsService {
         Product product=productServer.delete(request).getProduct();
         channel.shutdown();
         return product;
+    }
+
+    public void getProductsBasedOnDistance(int userId){
+
     }
 }

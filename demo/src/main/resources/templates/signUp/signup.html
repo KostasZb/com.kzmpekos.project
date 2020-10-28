@@ -16,47 +16,21 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark ">
-    <div class="container-fluid">
-
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="collapsibleNavbar">
-            <ul class="navbar-nav ">
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/market"> Marketplace</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/farmerhome"/>Farmer's page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/logout"/> Log out</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/signup"/> Sign up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/login"/> Log in</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<div th:insert="shared/navbar"></div>
 
 
 <div class="container pt-3 border">
     <h2 class="text-center">Sign Up!</h2>
-    <form action="signup/adduser" method="post">
-        <input type="text" placeholder="email" name="email" class="form-control pt-3">
-        <input type="text" placeholder="password" name="password" class="form-control pt-3">
-        <input type="text" placeholder="name" name="name" class="form-control pt-3">
-        <input type="text" placeholder="city" name="city" class="form-control pt-3">
-        <input type="text" placeholder="postcode" name="postcode" class="form-control pt-3">
-        <input type="text" placeholder="address" name="address" class="form-control pt-3">
-        <input type="checkbox" value="false" name="farmer" id="customer">
+    <form th:action="@{signup/adduser}" method="post">
+
+        <input type="email" placeholder="email" name="email" class="form-control m-3" required>
+        <input type="password" placeholder="password" name="password" class="form-control m-3" required>
+        <input type="text" placeholder="name" name="name" class="form-control m-3" required>
+        <input type="text" placeholder="city" name="city" class="form-control m-3" required>
+        <input type="text" placeholder="postcode" name="postcode" class="form-control m-3" required>
+        <input type="text" placeholder="address" name="address" class="form-control m-3" required>
+
+        <input type="checkbox" value="false" name="farmer" id="customer" checked>
         <label for="customer">customer</label>
         <input type="checkbox" value="true" name="farmer" id="farmer">
         <label for="farmer">farmer</label>
