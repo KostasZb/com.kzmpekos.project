@@ -1,0 +1,23 @@
+syntax="proto3";
+option java_package="com.proto.address";
+option java_multiple_files=true;
+
+message getAddressRequest{
+  int32 addressId=1;
+}
+message getAddressResponse{
+  addressDetails address=1;
+}
+
+
+message addressDetails{
+  int32 addressId=1;
+  string city=2;
+  string postcode=3;
+  string address=4;
+}
+
+service addressServer{
+  rpc getAddress(getAddressRequest) returns(getAddressResponse);
+
+}

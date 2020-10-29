@@ -36,10 +36,7 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
         AddproductResponse response = AddproductResponse.newBuilder().setResult(result).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-
-
     }
-
 
 
     @Override
@@ -59,8 +56,6 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
         ProductsResponse response = ProductsResponse.newBuilder().addAllProducts(productsList).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-
-
     }
 
     @Override
@@ -83,20 +78,22 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
         ProductResponse response = ProductResponse.newBuilder().setProduct(produc).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-
     }
 
 
     @Override
     public void getProductsByFarmerId(ProductByFarmerIdRequest request, StreamObserver<ProductByFarmerIdResponse> responseObserver) {
-        int id= request.getFarmerId();
-        List<com.kzmpekos.productsservice.entities.Product> products=repository.findAllByFarmerId(id);
-        List<Product> prods=new ArrayList<>();
+        int id = request.getFarmerId();
+        List<com.kzmpekos.productsservice.entities.Product> products = repository.findAllByFarmerId(id);
+        List<Product> prods = new ArrayList<>();
         for (com.kzmpekos.productsservice.entities.Product product : products
         ) {
-            Product prod = Product.newBuilder().setProductId(product.getProductId()).
-                    setName(product.getName()).setFarmerId(product.getFarmerId()).setQuantity(product.getQuantity()).
-                    setPricePerUnit(product.getPricePerUnit()).build();
+            Product prod = Product.newBuilder()
+                    .setProductId(product.getProductId()).
+                            setName(product.getName())
+                    .setFarmerId(product.getFarmerId())
+                    .setQuantity(product.getQuantity())
+                    .setPricePerUnit(product.getPricePerUnit()).build();
             prods.add(prod);
         }
         //creating the response and completing the rpc
@@ -108,20 +105,33 @@ public class ProductServiceImpl extends ProductServerGrpc.ProductServerImplBase 
 
     @Override
     public void delete(deleteRequest request, StreamObserver<deleteResponse> responseObserver) {
-        int productId=request.getProductId();
-        com.kzmpekos.productsservice.entities.Product prod=repository.findByProductId(productId);
-        Product product=Product.newBuilder().setQuantity(prod.getQuantity())
+        int productId = request.getProductId();
+        com.kzmpekos.productsservice.entities.Product prod = repository.findByProductId(productId);
+        Product product = Product.newBuilder().setQuantity(prod.getQuantity())
                 .setPricePerUnit(prod.getPricePerUnit())
                 .setName(prod.getName())
                 .setProductId(prod.getProductId())
                 .setFarmerId(prod.getFarmerId())
                 .build();
         repository.deleteById(productId);
-        deleteResponse response=deleteResponse.newBuilder().setResponse("product deleted").setProduct(product).build();
+        deleteResponse response = deleteResponse.newBuilder().setResponse("product deleted").setProduct(product).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
-
-
+    @Override
+    public void update(UpdateRequest request, StreamObserver<UpdateResponse> responseObserver) {
+        Product product=request.getProduct();
+        int id =product.getProductId();
+        Optional<com.kzmpekos.productsservice.entities.Product> prod=repository.findById(id);
+        if(prod.isPresent()){
+            com.kzmpekos.productsservice.entities.Product produc=prod.get();
+            produc.setQuantity(product.getQuantity());
+            produc.setPricePerUnit(product.getPricePerUnit());
+            repository.save(produc);
+        }
+        UpdateResponse response=UpdateResponse.newBuilder().setResponse("product updated successfully").build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

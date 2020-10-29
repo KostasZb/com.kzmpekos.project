@@ -1,0 +1,25 @@
+syntax="proto3";
+
+option java_package="com.proto.users";
+option java_multiple_files=true;
+
+message getUserByIdRequest{
+  int32 userId=1;
+}
+
+message getUserByIdResponse{
+  User user=1;
+}
+
+message User{
+  int32 userId=3;
+  string name=1;
+  int32 address_id=2;
+  string email=4;
+  string password=5;
+  bool isFarmer=6;
+}
+
+service UserServer{
+  rpc GetUserById(getUserByIdRequest) returns (getUserByIdResponse){};
+}

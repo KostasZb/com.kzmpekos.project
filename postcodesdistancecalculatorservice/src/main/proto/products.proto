@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package= "com.proto.products";
+option java_multiple_files=true;
+
+
+//getting all the Products
+message ProductsResponse{
+	repeated Product products=1;
+}
+message ProductsRequest{
+	string request=1;
+}
+
+
+message Product{
+	int32 productId=5;
+	string name=1;
+	int32 farmerId=2;
+	int32 quantity=3;
+	float price_per_unit=4;
+}
+
+service ProductServer{
+
+	//Getting all the products
+	rpc GetProducts(ProductsRequest) returns (ProductsResponse){};
+}

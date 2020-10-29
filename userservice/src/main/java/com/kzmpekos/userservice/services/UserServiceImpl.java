@@ -75,4 +75,20 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void getUserById(getUserByIdRequest request, StreamObserver<getUserByIdResponse> responseObserver) {
+        int userId=request.getUserId();
+        com.kzmpekos.userservice.entities.User user=repository.findByUserId(userId);
+        User usr=User.newBuilder()
+                .setIsFarmer(user.getIsFarmer())
+                .setAddressId(user.getAddressId())
+                .setUserId(user.getUserId())
+                .setEmail(user.getEmail())
+                .setName(user.getName())
+                .build();
+        getUserByIdResponse response=getUserByIdResponse.newBuilder().setUser(usr).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

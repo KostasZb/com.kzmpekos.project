@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.services.CommissionService;
+import com.example.demo.services.DistanceCalculatorService;
 import com.example.demo.services.ProductsService;
 import com.proto.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/market")
@@ -24,11 +26,15 @@ public class MarketController {
     private ProductsService productsService;
     @Autowired
     private CommissionService commissionService;
+    @Autowired
+    private DistanceCalculatorService distanceCalculatorService;
 
     @GetMapping(value = {""})
     public String getProducts(Model model) {
-
-        model.addAttribute("products", productsService.getProducts());
+        UserDetailsImpl principal= (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId=principal.getUserId();
+        List products=distanceCalculatorService.getListwithDistance(userId);
+        model.addAttribute("products", distanceCalculatorService.getListwithDistance(userId));
         return "market/productslist";
     }
 
