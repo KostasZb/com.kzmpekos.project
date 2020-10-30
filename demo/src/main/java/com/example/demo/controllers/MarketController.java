@@ -1,9 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.models.NewUserWithAddress;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.services.CommissionService;
 import com.example.demo.services.DistanceCalculatorService;
 import com.example.demo.services.ProductsService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.proto.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -29,6 +32,9 @@ public class MarketController {
     @Autowired
     private DistanceCalculatorService distanceCalculatorService;
 
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "getProductsFallback", commandProperties =
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")})
     @GetMapping(value = {""})
     public String getProducts(Model model) {
         UserDetailsImpl principal= (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -38,6 +44,9 @@ public class MarketController {
         return "market/productslist";
     }
 
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "orderProductFallback", commandProperties =
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")})
     @PostMapping(value = {"/order"})
     @ResponseBody
     public String orderProduct(String productId) {
@@ -51,10 +60,11 @@ public class MarketController {
         return data;
     }
 
-    @PostMapping(value = {"/distance"})
-    @ResponseBody
-    public String calculateDistance(int productId){
-        return "";
+    public String getProductsFallback(Model model){
+        return "somethingWrong/somethingWrong";
+    }
+    public String orderProductFallback(String productId){
+        return "Something went wrong, please try again";
     }
 
 }

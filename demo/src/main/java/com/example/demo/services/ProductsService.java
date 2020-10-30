@@ -20,6 +20,9 @@ public class ProductsService {
     //Adding a product
     public void addProduct(NewProduct newProduct) {
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -42,6 +45,9 @@ public class ProductsService {
     //Getting a product according to its id
     public void retrieveProduct(int productId) {
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -60,6 +66,9 @@ public class ProductsService {
     //Getting all available products
     public List<Product> getProducts() {
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -77,6 +86,9 @@ public class ProductsService {
 
     public List<Product> getProductsByFarmerId(int id){
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -90,6 +102,9 @@ public class ProductsService {
     }
     public String updateProduct(Product product){
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -104,6 +119,9 @@ public class ProductsService {
 
     public Product deleteProductById(int id){
         //creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("productservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();

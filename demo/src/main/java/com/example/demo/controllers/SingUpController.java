@@ -54,7 +54,7 @@ public class SingUpController {
         return "login/login";
     }
     public String somethingWentWrong(NewUserWithAddress userWithAddress){
-        return "signup/signup";
+        return "somethingWrong/somethingWrong";
     }
 
 }

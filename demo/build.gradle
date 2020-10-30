@@ -59,6 +59,8 @@ test {
     useJUnitPlatform()
 }
 
+//Code Generation for protocol buffers REFERENCE: https://www.grpc.io/docs/languages/java/generated-code/
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.12.0"

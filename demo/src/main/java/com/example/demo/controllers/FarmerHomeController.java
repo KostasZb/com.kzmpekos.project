@@ -1,9 +1,12 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.NewProduct;
+import com.example.demo.models.NewUserWithAddress;
 import com.example.demo.models.ProductChange;
 import com.example.demo.security.UserDetailsImpl;
 import com.example.demo.services.ProductsService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.proto.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +22,9 @@ public class FarmerHomeController {
     @Autowired
     private ProductsService productsService;
 
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "getOwnProductsFallback", commandProperties =
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")})
     @GetMapping("")
     public String getOwnProducts(Model model) {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -27,6 +33,9 @@ public class FarmerHomeController {
         return "farmerHome/products";
     }
 
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "updateProductFallback", commandProperties =
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")})
     @PostMapping("/changeProduct")
     public String updateProduct(ProductChange productChange) {
 
@@ -52,6 +61,9 @@ public class FarmerHomeController {
         return "farmerHome/addProduct";
     }
 
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "addNewProductFallback", commandProperties =
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "2000")})
     @PostMapping("/farmerhome/addNewProduct")
     public String addNewProduct(NewProduct product){
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -59,5 +71,15 @@ public class FarmerHomeController {
         product.setFarmerId(userId);
         productsService.addProduct(product);
         return "farmerHome/productAdded";
+    }
+
+    public String addNewProductFallback(NewProduct product){
+        return "somethingWrong/somethingWrong";
+    }
+    public String updateProductFallback(ProductChange productChange){
+        return "somethingWrong/somethingWrong";
+    }
+    public String getOwnProductsFallback(Model model){
+        return "somethingWrong/somethingWrong";
     }
 }

@@ -16,6 +16,9 @@ public class UserService {
     //Adding a user
     public String signUpUser(User user) {
         //Creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient = DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka("userservice", false);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(), instanceInfo.getPort()).usePlaintext().build();
@@ -34,6 +37,9 @@ public class UserService {
     public User LogInUser(String email, String password) {
 
         //Creating the channel
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient= DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo=eurekaClient.getNextServerFromEureka("userservice",false);
         ManagedChannel channel=ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(),instanceInfo.getPort()).usePlaintext().build();
@@ -50,7 +56,10 @@ public class UserService {
 
     //Getting a user based on username
     public User getUser(String email){
-        //Creating the channel
+        //Creating the channel.
+        //Getting the next available Eureka registered service based on round robin
+        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
+        //REFERENCE: https://www.programcreek.com/java-api-examples/?code=Kixeye%2Fchassis%2Fchassis-master%2Fchassis-support%2Fsrc%2Ftest%2Fjava%2Fcom%2Fkixeye%2Fchassis%2Fsupport%2Ftest%2Feureka%2FChassisEurekaRegistrationTest.java
         EurekaClient eurekaClient= DiscoveryManager.getInstance().getEurekaClient();
         InstanceInfo instanceInfo=eurekaClient.getNextServerFromEureka("userservice",false);
         ManagedChannel channel=ManagedChannelBuilder.forAddress(instanceInfo.getIPAddr(),instanceInfo.getPort()).usePlaintext().build();
