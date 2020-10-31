@@ -1,0 +1,80 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+    id 'idea'
+    id 'com.google.protobuf' version '0.8.13'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //Grpc dependencies REFERENCE:https://github.com/grpc/grpc-java
+    implementation 'io.grpc:grpc-netty-shaded:1.33.0'
+    implementation 'io.grpc:grpc-protobuf:1.33.0'
+    implementation 'io.grpc:grpc-stub:1.33.0'
+
+    //Spring cloud dependency
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-dependencies
+    runtime group: 'org.springframework.cloud', name: 'spring-cloud-dependencies', version: 'Hoxton.SR8', ext: 'pom'
+
+    //Eureka dependency
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-eureka-client
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-eureka-client', version: '2.2.5.RELEASE'
+    
+
+    //Hystrix dependency
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-netflix-hystrix
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.5.RELEASE'
+
+    //Spring Security
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.4.RELEASE'
+
+
+    //Thymeleaf
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.3.4.RELEASE'
+    // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
+    compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    testCompile group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.6.0'
+
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+//Code Generation for protocol buffers REFERENCE: https://www.grpc.io/docs/languages/java/generated-code/
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.12.0"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.32.1'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
