@@ -1,0 +1,80 @@
+version: '3.8'
+services:
+  discoveryserver:
+    build: discoveryserver
+    image: 9f1584f238dc
+    ports:
+    - "8761:8761"
+    networks: {
+      backend}
+    restart: on-failure
+
+  postcodesdistancecalculatorservice:
+    build: postcodesdistancecalculatorservice
+    image: a60c3df68494
+    ports:
+    - "6567-6570:6567"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+  addressservice:
+    build: addressservice
+    image: e831a201af00
+    ports:
+    - "6571-6574:6565"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+  commissionservice:
+    build: commissionservice
+    image: 6c30a3331b3c
+    ports:
+    - "6575-6578:6562"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+  demo:
+    build: demo
+    image: 2760a47a7789
+    ports:
+    - "8080:8080"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+
+  productsservice:
+    build: productsservice
+    image: b295e2a29421
+    ports:
+    - "6588-6591:6564"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+  userservice:
+    build: userservice
+    image: c2af7290767e
+    ports:
+    - "6584-6587:6563"
+    networks: {
+      backend}
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discoveryserver:8761/eureka/
+    restart: on-failure
+
+networks:
+    backend:
