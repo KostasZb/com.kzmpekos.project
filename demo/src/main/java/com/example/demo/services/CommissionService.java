@@ -32,7 +32,7 @@ public class CommissionService {
         return response.getResult();
     }
 
-    public void getCommissions(int userId) {
+    public List<CommissionWithDetails> getCommissions(int userId) {
 
         //Creating the channel
         //Getting the next available Eureka registered service based on round robin
@@ -45,8 +45,8 @@ public class CommissionService {
         //Creating and building the message
         GetCommissionsRequest request = GetCommissionsRequest.newBuilder().setUserId(userId).build();
         //Doing the RPC and retrieving the reply
-        List response = commissionServer.getCommissions(request).getCommissionsList();
-
+        List<CommissionWithDetails> response = commissionServer.getCommissions(request).getCommissionsList();
+        return  response;
     }
 
 }

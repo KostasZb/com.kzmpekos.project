@@ -31,7 +31,7 @@ public class SingUpController {
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "somethingWentWrong", commandProperties =
-            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "5000")})
+            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "10000")})
     @PostMapping(value = {"/adduser"})
     public String adduser(NewUserWithAddress userWithDetails) {
         addressDetails details=addressDetails.newBuilder().

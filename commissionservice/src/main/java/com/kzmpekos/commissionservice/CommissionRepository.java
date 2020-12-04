@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface CommissionRepository extends JpaRepository<Commission,Integer> {
     public List<Commission> findAllByUserId(int id);
+    public List<Commission> findAllByFarmerId(int id);
+
 
 }

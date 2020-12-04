@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 public class DistanceCalculatorService {
-   public List<productWithDistance> getListwithDistance(int userId){
+   public List<productWithDistance> getListWithDistance(int userId){
        //Creating the channel
        //Getting the next available Eureka registered service based on round robin
        // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)

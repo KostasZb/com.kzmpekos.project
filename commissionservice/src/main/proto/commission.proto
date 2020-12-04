@@ -16,7 +16,7 @@ message GetCommissionsRequest{
 }
 
 message GetCommissionsResponse{
-  repeated Commission commissions=1;
+  repeated CommissionWithDetails commissions=1;
 }
 
 message Commission{
@@ -24,6 +24,14 @@ message Commission{
   int32 productId=2;
   float totalPrice=4;
 }
+message CommissionWithDetails{
+  float totalPrice=1;
+  string productName=2;
+  int32 quantity=3;
+  int32 productId=4;
+  int32 userId=5;
+}
+
 service CommissionServer{
   rpc addCommission(AddCommissionRequest) returns (AddCommissionResponse){};
   rpc getCommissions(GetCommissionsRequest) returns (GetCommissionsResponse);

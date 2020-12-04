@@ -6,23 +6,49 @@ import java.sql.Timestamp;
 @Entity
 public class Commission {
     @Id
-    @Column(name="orderId")
+    @Column(name = "orderId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @Basic
     @Column(name = "userId")
     private int userId;
-    @Basic
     @Column(name = "productId")
     private int productId;
-    @Basic
     @Column(name = "timestamp")
     private Timestamp timestamp;
-    @Basic
     @Column(name = "totalCost")
     private float totalCost;
+    @Column(name="farmerId")
+    private int farmerId;
+    @Column(name="productName")
+    private String productName;
+    @Column(name="quantity")
+    private int quantity;
 
     public Commission() {
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public int getFarmerId() {
+        return farmerId;
+    }
+
+    public void setFarmerId(int farmerId) {
+        this.farmerId = farmerId;
     }
 
     public int getOrderId() {
@@ -64,7 +90,6 @@ public class Commission {
     public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
     }
-
 
 
 }

@@ -30,19 +30,19 @@ public class MarketController {
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "getProductsFallback", commandProperties =
-            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")})
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")})
     @GetMapping(value = {""})
     public String getProducts(Model model) {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principal.getUserId();
-        List products = distanceCalculatorService.getListwithDistance(userId);
-        model.addAttribute("products", distanceCalculatorService.getListwithDistance(userId));
+        List products = distanceCalculatorService.getListWithDistance(userId);
+        model.addAttribute("products", products);
         return "market/productslist";
     }
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "orderProductFallback", commandProperties =
-            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")})
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "100000")})
     @PostMapping(value = {"/order"})
     @ResponseBody
     public String orderProduct(String productId) {
@@ -50,9 +50,10 @@ public class MarketController {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int prodId = Integer.parseInt(productId);
         int userId = principal.getUserId();
-        Product product = productsService.deleteProductById(prodId);
+        Product product = productsService.retrieveProduct(prodId);
         float totalPrice = product.getPricePerUnit() * product.getQuantity();
         String data = commissionService.addCommission(prodId, userId, totalPrice);
+        productsService.deleteProductById(prodId);
         return data;
     }
 

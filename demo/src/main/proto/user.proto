@@ -26,10 +26,19 @@ message LogInResponse{
 	User user=1;
 }
 
+message getUserByIdRequest{
+  int32 userId=1;
+}
+
+message getUserByIdResponse{
+  User user=1;
+}
+
 service UserServer{
   rpc SignUp(SignUpRequest) returns (SignUpResponse){};
   rpc LogIn(LogInRequest) returns (LogInResponse){};
   rpc GetUserByEmail(getUserByEmailRequest) returns (getUserByEmailResponse){};
+  rpc GetUserById(getUserByIdRequest) returns (getUserByIdResponse){};
 }
 
 message User{

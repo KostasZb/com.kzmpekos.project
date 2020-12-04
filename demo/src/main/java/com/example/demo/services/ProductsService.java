@@ -43,7 +43,7 @@ public class ProductsService {
     }
 
     //Getting a product according to its id
-    public void retrieveProduct(int productId) {
+    public Product retrieveProduct(int productId) {
         //creating the channel
         //Getting the next available Eureka registered service based on round robin
         // REFERENCE: http://javadox.com/com.netflix.eureka/eureka-client/1.1.136/com/netflix/discovery/DiscoveryClient.html#getNextServerFromEureka(java.lang.String,%20boolean)
@@ -61,8 +61,9 @@ public class ProductsService {
         //Doing the RPC and retrieving the reply
         ProductResponse response = productServer.getProduct(request);
         channel.shutdown();
+        return response.getProduct();
     }
-
+/*
     //Getting all available products
     public List<Product> getProducts() {
         //creating the channel
@@ -82,7 +83,7 @@ public class ProductsService {
         List products = productServer.getProducts(request).getProductsList();
         channel.shutdown();
         return products;
-    }
+    }*/
 
     public List<Product> getProductsByFarmerId(int id){
         //creating the channel
@@ -133,7 +134,5 @@ public class ProductsService {
         return product;
     }
 
-    public void getProductsBasedOnDistance(int userId){
 
-    }
 }

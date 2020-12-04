@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @EnableEurekaClient
-@EntityScan("com/kzmpekos/postcodesdistancecalculatorservice/entities")
+@EntityScan("com/kzmpekos/postcodesdistancecalculatorservice/DomainLayer/entities")
 @SpringBootApplication
 public class PostcodesdistancecalculatorserviceApplication {
 
