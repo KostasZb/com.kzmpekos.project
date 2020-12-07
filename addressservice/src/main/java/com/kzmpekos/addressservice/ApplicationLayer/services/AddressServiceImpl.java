@@ -19,11 +19,13 @@ public class AddressServiceImpl extends addressServerGrpc.addressServerImplBase 
 
     @Override
     public void getAddress(getAddressRequest request, StreamObserver<getAddressResponse> responseObserver) {
+        //Getting the id of the address
         int addressId = request.getAddressId();
         addressDetails details = null;
         //REFERENCE: https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html
-        // & https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
+        //Getting the optional of address
         Optional<Address> address = repository.findById(addressId);
+        //Copying the values if the address optional contains the address object
         if (address.isPresent()) {
             Address addr = address.get();
             details = addressDetails.newBuilder().
@@ -34,6 +36,7 @@ public class AddressServiceImpl extends addressServerGrpc.addressServerImplBase 
         } else {
 
         }
+        //Adding the object in the response
         getAddressResponse response = getAddressResponse.newBuilder().setAddress(details).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

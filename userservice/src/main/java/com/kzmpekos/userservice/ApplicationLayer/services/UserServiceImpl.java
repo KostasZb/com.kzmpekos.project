@@ -13,8 +13,9 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
 
     @Override
     public void signUp(SignUpRequest request, StreamObserver<SignUpResponse> responseObserver) {
-        //Copying the values
+        //Getting the user object out of the request
         User user = request.getUser();
+        //Copying the values
         com.kzmpekos.userservice.DomainLayer.entities.User usr = new com.kzmpekos.userservice.DomainLayer.entities.User();
         usr.setName(user.getName());
         usr.setPassword(user.getPassword());
@@ -24,8 +25,8 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
         //Saving the user in the db
         String result;
         if (usr != null && repository.findByEmail(user.getEmail()) == null) {
-            com.kzmpekos.userservice.DomainLayer.entities.User createduser=repository.save(usr);
-            result = "User"+ createduser.getName()+"successfully added";
+            com.kzmpekos.userservice.DomainLayer.entities.User createduser = repository.save(usr);
+            result = "User" + createduser.getName() + "successfully added";
         } else {
             result = "Could not add user";
         }
@@ -38,9 +39,12 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
 
     @Override
     public void logIn(LogInRequest request, StreamObserver<LogInResponse> responseObserver) {
+        //Getting the user details from the request
         String email = request.getUserDetails().getEmail();
         String password = request.getUserDetails().getPassword();
+        //Finding the user in the database
         com.kzmpekos.userservice.DomainLayer.entities.User user = repository.findByEmailAndPassword(email, password);
+        //Copying the values of the user object
         User usr = null;
         if (user != null) {
             usr = User.newBuilder().
@@ -57,8 +61,11 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
 
     @Override
     public void getUserByEmail(getUserByEmailRequest request, StreamObserver<getUserByEmailResponse> responseObserver) {
-        String email=request.getEmail();
+        //Getting the user's email out of the request
+        String email = request.getEmail();
+        //Finding the user in the database
         com.kzmpekos.userservice.DomainLayer.entities.User user = repository.findByEmail(email);
+        //Copying the values of the user object
         User usr = null;
         if (user != null) {
             usr = User.newBuilder().
@@ -77,16 +84,20 @@ public class UserServiceImpl extends UserServerGrpc.UserServerImplBase {
 
     @Override
     public void getUserById(getUserByIdRequest request, StreamObserver<getUserByIdResponse> responseObserver) {
-        int userId=request.getUserId();
-        com.kzmpekos.userservice.DomainLayer.entities.User user=repository.findByUserId(userId);
-        User usr=User.newBuilder()
+        //Getting the user's id out of the request
+        int userId = request.getUserId();
+        //Finding the user in the database
+        com.kzmpekos.userservice.DomainLayer.entities.User user = repository.findByUserId(userId);
+        //Copying the values of the user object
+        User usr = User.newBuilder()
                 .setIsFarmer(user.getIsFarmer())
                 .setAddressId(user.getAddressId())
                 .setUserId(user.getUserId())
                 .setEmail(user.getEmail())
                 .setName(user.getName())
                 .build();
-        getUserByIdResponse response=getUserByIdResponse.newBuilder().setUser(usr).build();
+        //Building the response and completing the RPC
+        getUserByIdResponse response = getUserByIdResponse.newBuilder().setUser(usr).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

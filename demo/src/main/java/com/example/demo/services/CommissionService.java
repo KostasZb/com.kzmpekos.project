@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 public class CommissionService {
-
-    public String addCommission(int productId,int userId, float totalPrice) {
+    //Adding a new commission
+    public String addCommission(int productId, int userId, float totalPrice) {
 
         //Creating the channel
         //Getting the next available Eureka registered service based on round robin
@@ -32,6 +32,7 @@ public class CommissionService {
         return response.getResult();
     }
 
+    //Getting a list of available commissions
     public List<CommissionWithDetails> getCommissions(int userId) {
 
         //Creating the channel
@@ -46,7 +47,7 @@ public class CommissionService {
         GetCommissionsRequest request = GetCommissionsRequest.newBuilder().setUserId(userId).build();
         //Doing the RPC and retrieving the reply
         List<CommissionWithDetails> response = commissionServer.getCommissions(request).getCommissionsList();
-        return  response;
+        return response;
     }
 
 }

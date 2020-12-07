@@ -41,10 +41,15 @@ public class DistanceCalculatorServiceImpl extends distanceCalculatorServerGrpc.
         ArrayList<productWithDistance> productsWithDistance = new ArrayList<>();
         for (Product product : products
         ) {
+            //Getting the id of the relevant farmer
             int farmerId=product.getFarmerId();
+            //Getting the farmer
             User farmer=userService.getUserWithId(farmerId);
+            //Getting the farmer's postcode
             String farmerPostcode=addressService.getAddress(farmer.getAddressId()).getPostcode();
+            //Calculating the distance between the given postcodes
             float distance=distanceCalculatorService.calculate(userPostcode,farmerPostcode);
+            //Creating the product with distance details
             productWithDistance productWithDistance= com.proto.distanceCalculator.productWithDistance.newBuilder()
                     .setDistance(distance)
                     .setProductId(product.getProductId())
@@ -55,7 +60,7 @@ public class DistanceCalculatorServiceImpl extends distanceCalculatorServerGrpc.
                     .build();
             productsWithDistance.add(productWithDistance);
         }
-
+        //Adding the object to the response
         getProductsWithDistanceResponse response=getProductsWithDistanceResponse.newBuilder().addAllProductWithDistance(productsWithDistance).build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();

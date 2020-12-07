@@ -10,9 +10,7 @@ import com.example.demo.services.ProductsService;
 import com.example.demo.services.UserService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.proto.address.Address;
 import com.proto.address.addressDetails;
-import com.proto.commissions.Commission;
 import com.proto.commissions.CommissionWithDetails;
 import com.proto.products.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +39,7 @@ public class FarmerHomeController {
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "getOwnProductsFallback", commandProperties =
-            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "10000")})
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")})
     @GetMapping("")
     public String getOwnProducts(Model model) {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -52,7 +50,7 @@ public class FarmerHomeController {
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "updateProductFallback", commandProperties =
-            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "10000")})
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")})
     @PostMapping("/changeProduct")
     public String updateProduct(ProductChange productChange) {
 
@@ -75,45 +73,48 @@ public class FarmerHomeController {
 
 
     @GetMapping("/orders")
-    public String getOrders(Model model){
+    //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
+    @HystrixCommand(fallbackMethod = "ordersFallback", commandProperties =
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")})
+    public String getOrders(Model model) {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int id = principal.getUserId();
-        List<CommissionWithDetails> commissions=commissionService.getCommissions(id);
-        ArrayList<OrderWithDetails> orderWithDetailsArrayList=new ArrayList<>();
+        List<CommissionWithDetails> commissions = commissionService.getCommissions(id);
+        ArrayList<OrderWithDetails> orderWithDetailsArrayList = new ArrayList<>();
 
-        for (CommissionWithDetails commission:commissions
-             ) {
-            OrderWithDetails orderWithDetails=new OrderWithDetails();
+        for (CommissionWithDetails commission : commissions
+        ) {
+            OrderWithDetails orderWithDetails = new OrderWithDetails();
             orderWithDetails.setTotalPrice(commission.getTotalPrice());
             orderWithDetails.setName(commission.getProductName());
             orderWithDetails.setQuantity(commission.getQuantity());
             orderWithDetails.setUserId(commission.getUserId());
             orderWithDetailsArrayList.add(orderWithDetails);
         }
-        model.addAttribute("orders",orderWithDetailsArrayList);
+        model.addAttribute("orders", orderWithDetailsArrayList);
         return "farmerHome/orders";
     }
 
     @PostMapping("/addressDetails")
     @ResponseBody
-    public String seeAddressDetails(String userId){
-        int id=Integer.parseInt(userId);
-        int addressId=userService.getUserWithId(id).getAddressId();
-        addressDetails address=addressService.getAddress(addressId);
-        String details=address.getAddress()+","+address.getCity()+","+address.getPostcode();
+    public String seeAddressDetails(String userId) {
+        int id = Integer.parseInt(userId);
+        int addressId = userService.getUserWithId(id).getAddressId();
+        addressDetails address = addressService.getAddress(addressId);
+        String details = address.getAddress() + "," + address.getCity() + "," + address.getPostcode();
         return details;
     }
 
     @GetMapping("/addProduct")
-    public String addProduct(){
+    public String addProduct() {
         return "farmerHome/addProduct";
     }
 
     //Setting a fallback method in case the circuit breaker is open, REFERENCE: https://spring.io/guides/gs/circuit-breaker/, https://www.tutorialspoint.com/spring_boot/spring_boot_hystrix.htm
     @HystrixCommand(fallbackMethod = "addNewProductFallback", commandProperties =
-            {@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds",value = "10000")})
+            {@HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")})
     @PostMapping("/farmerhome/addNewProduct")
-    public String addNewProduct(NewProduct product){
+    public String addNewProduct(NewProduct product) {
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int userId = principal.getUserId();
         product.setFarmerId(userId);
@@ -121,13 +122,19 @@ public class FarmerHomeController {
         return "farmerHome/productAdded";
     }
 
-    public String addNewProductFallback(NewProduct product){
+    public String addNewProductFallback(NewProduct product) {
         return "somethingWrong/somethingWrong";
     }
-    public String updateProductFallback(ProductChange productChange){
+
+    public String updateProductFallback(ProductChange productChange) {
         return "somethingWrong/somethingWrong";
     }
-    public String getOwnProductsFallback(Model model){
+
+    public String getOwnProductsFallback(Model model) {
+        return "somethingWrong/somethingWrong";
+    }
+
+    public String ordersFallback() {
         return "somethingWrong/somethingWrong";
     }
 }

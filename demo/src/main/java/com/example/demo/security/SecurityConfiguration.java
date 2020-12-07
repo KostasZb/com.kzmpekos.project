@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor;
-import org.springframework.web.servlet.support.RequestDataValueProcessor;
 
 //REFERENCE: https://www.youtube.com/watch?v=her_7pa0vrg&t=11987s&ab_channel=Amigoscode
 
@@ -32,9 +30,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                .antMatchers("/", "index", "login", "signup","logout","/js/*").permitAll()
-                .antMatchers("/market").hasAnyRole(ApplicationUserRole.USER.name(),ApplicationUserRole.FARMER.name())
-                .antMatchers("/farmerhome","/farmerhome/addProduct").hasRole(ApplicationUserRole.FARMER.name())
+                .antMatchers("/", "index", "login", "signup", "logout", "/js/*").permitAll()
+                .antMatchers("/market").hasAnyRole(ApplicationUserRole.USER.name(), ApplicationUserRole.FARMER.name())
+                .antMatchers("/farmerhome", "/farmerhome/addProduct").hasRole(ApplicationUserRole.FARMER.name())
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("email").and()
                 .logout().logoutUrl("/logout").clearAuthentication(true).invalidateHttpSession(true).deleteCookies("JSESSIONID");

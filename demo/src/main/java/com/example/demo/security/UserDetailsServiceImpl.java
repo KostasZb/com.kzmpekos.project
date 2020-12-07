@@ -3,7 +3,6 @@ package com.example.demo.security;
 import com.example.demo.services.UserService;
 import com.proto.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,18 +23,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //Getting the user from the userservice
         User user = service.getUser(username);
         Collection<SimpleGrantedAuthority> authorities = new HashSet<>();
-
-        SimpleGrantedAuthority roleUser=new SimpleGrantedAuthority("ROLE_"+ApplicationUserRole.USER.name());
-        SimpleGrantedAuthority roleFarmer=new SimpleGrantedAuthority("ROLE_"+ApplicationUserRole.FARMER.name());
-        if(user.getIsFarmer()){
+        //Creating the granted authorities
+        SimpleGrantedAuthority roleUser = new SimpleGrantedAuthority("ROLE_" + ApplicationUserRole.USER.name());
+        SimpleGrantedAuthority roleFarmer = new SimpleGrantedAuthority("ROLE_" + ApplicationUserRole.FARMER.name());
+        //Adding the proper authority tp the user
+        if (user.getIsFarmer()) {
             authorities.add(roleFarmer);
-        }else{
+        } else {
             authorities.add(roleUser);
         }
-
-        UserDetailsImpl userDetails = new UserDetailsImpl( authorities, passwordEncoder.encode(user.getPassword()), user.getEmail());
+        UserDetailsImpl userDetails = new UserDetailsImpl(authorities, passwordEncoder.encode(user.getPassword()), user.getEmail());
         userDetails.setUserId(user.getUserId());
         return userDetails;
     }

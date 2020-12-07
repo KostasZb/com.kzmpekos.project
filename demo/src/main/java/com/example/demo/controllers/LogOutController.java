@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LogOutController {
 
     @GetMapping
-    public String getLogIn(){
+    public String getLogIn() {
         SecurityContextHolder.getContext().setAuthentication(null);
         return "logout/logout";
     }

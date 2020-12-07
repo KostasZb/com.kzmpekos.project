@@ -1,7 +1,8 @@
 package com.kzmpekos.commissionservice;
 
-import com.kzmpekos.commissionservice.services.CommissionServiceImpl;
-import com.kzmpekos.commissionservice.services.ProductsService;
+import com.kzmpekos.commissionservice.ApplicationLayer.services.CommissionServiceImpl;
+import com.kzmpekos.commissionservice.ApplicationLayer.services.ProductsService;
+import com.kzmpekos.commissionservice.DomainLayer.repositories.CommissionRepository;
 import com.proto.commissions.*;
 import com.proto.products.Product;
 import io.grpc.internal.testing.StreamRecorder;
@@ -36,10 +37,10 @@ public class CommissionServiceImplTest {
     void testAddCommission() throws Exception {
         //REFERENCE: https://yidongnan.github.io/grpc-spring-boot-starter/en/server/testing.html
         Commission commission=Commission.newBuilder().setTotalPrice(1).setUserId(1).setProductId(1).build();
-        com.kzmpekos.commissionservice.entities.Commission comm=new com.kzmpekos.commissionservice.entities.Commission();
+        com.kzmpekos.commissionservice.DomainLayer.entities.Commission comm=new com.kzmpekos.commissionservice.DomainLayer.entities.Commission();
         comm.setOrderId(1);
         //Mocking the repository
-        when(repository.save(Mockito.any(com.kzmpekos.commissionservice.entities.Commission.class))).thenReturn(comm);
+        when(repository.save(Mockito.any(com.kzmpekos.commissionservice.DomainLayer.entities.Commission.class))).thenReturn(comm);
         Product product=Product.newBuilder().setProductId(1).setQuantity(1).setPricePerUnit(1).setFarmerId(1).build();
         //Mocking the products service
         when(productsService.getProductById(1)).thenReturn(product);
@@ -63,14 +64,14 @@ public class CommissionServiceImplTest {
     }
     @Test
     void testGetCommissions() throws Exception {
-        com.kzmpekos.commissionservice.entities.Commission commission=new com.kzmpekos.commissionservice.entities.Commission();
+        com.kzmpekos.commissionservice.DomainLayer.entities.Commission commission=new com.kzmpekos.commissionservice.DomainLayer.entities.Commission();
         commission.setQuantity(1);
         commission.setProductName("Name");
         commission.setOrderId(1);
         commission.setTotalCost(1);
         commission.setProductId(1);
         commission.setUserId(1);
-        ArrayList<com.kzmpekos.commissionservice.entities.Commission> commissionList=new ArrayList<>();
+        ArrayList<com.kzmpekos.commissionservice.DomainLayer.entities.Commission> commissionList=new ArrayList<>();
         commissionList.add(commission);
         when(repository.findAllByFarmerId(1)).thenReturn(commissionList);
         //Creating a request

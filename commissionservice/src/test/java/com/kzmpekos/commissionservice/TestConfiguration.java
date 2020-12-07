@@ -1,7 +1,7 @@
 package com.kzmpekos.commissionservice;
 
-import com.kzmpekos.commissionservice.services.CommissionServiceImpl;
-import com.kzmpekos.commissionservice.services.ProductsService;
+import com.kzmpekos.commissionservice.ApplicationLayer.services.CommissionServiceImpl;
+import com.kzmpekos.commissionservice.ApplicationLayer.services.ProductsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

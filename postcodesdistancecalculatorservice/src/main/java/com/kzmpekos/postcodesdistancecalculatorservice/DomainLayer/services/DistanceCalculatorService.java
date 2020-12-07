@@ -11,6 +11,7 @@ public class DistanceCalculatorService {
     private PostcodesWithCoordinatesRepository repository;
 
     public float calculate(String postcodeUser, String postcodeFarmer) {
+        //Getting the coordinates of the given postcodes
         PostcodesWithCoordinates userPostcodeWithCoordinates=repository.findByPostcode(postcodeUser);
         PostcodesWithCoordinates farmerPostcodeWithCoordinates=repository.findByPostcode(postcodeFarmer);
         double latitudeUser=userPostcodeWithCoordinates.getLatitude();
@@ -19,10 +20,11 @@ public class DistanceCalculatorService {
         double longitudeFarmer=userPostcodeWithCoordinates.getLongitude();
         //REFERENCE: https://iopscience.iop.org/article/10.1088/1742-6596/1500/1/012104/pdf
         final int R=6371;
+        //Converting to radians
         double Δlat=Math.toRadians(latitudeFarmer-latitudeUser);
         double Δlong=Math.toRadians(longitudeFarmer-longitudeUser);
+        //calculating the distance
         double distance=2*R*Math.asin(Math.sqrt(Math.pow(Math.sin(Δlat/2),2)+Math.cos(latitudeFarmer)*Math.cos(latitudeUser)*Math.pow(Math.sin(Δlong/2),2)));
-
         return (float)Math.round(distance*100)/100;
     }
 }
